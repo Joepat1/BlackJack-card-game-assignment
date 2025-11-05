@@ -426,6 +426,10 @@ public class BlackJack {
                     input = userInput.nextLine();
                     playerTurn = false;
                 } // end of if else statement
+            } else if ((playerSum[0] == 21) || (playerSum[1] == 21) && playerTurn) {
+                System.out.println("Congratulations! you drew a Black Jack!\n(Press enter to continue.)");
+                input = userInput.nextLine();
+                playerTurn = false;
             } // end of if statement (checks whether it's the player's turn or not)
 
             // checks if it's the computer's turn, and then has it reveal its card if it's the computer's first turn, or decide whether to hit or stand if it's the computer's 2nd+ turn
@@ -608,3 +612,4 @@ public class BlackJack {
         } // end of for loop
     } // end of method shuffle
 } // end of class BlackJack
+
