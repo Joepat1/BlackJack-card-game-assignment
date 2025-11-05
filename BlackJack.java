@@ -36,16 +36,6 @@ public class BlackJack {
             deck[i] = new Card(faces[i % 13], suits[i / 13]);
         }
 
-        //shuffle();
-
-        /*Card test;
-        test = deal();
-        System.out.println(test);
-
-        String check = test.toString();
-
-        check = check.split(" ")[0];*/
-
         // welcomes the user to the game
         System.out.println("Welcome to Black Jack! the goal of the game is to get as close to 21 as possible without going over.\nYou can either choose to hit, (draw a new card) or stand (end turn).\nIf you have an ace in your hand, your hand score will increase by 11 without busting you if the additional value is over 21.\n(Press enter to continue.)");
         // blank input line to break up the text and make it more readable in the output
@@ -95,30 +85,16 @@ public class BlackJack {
                     break;
             } // end of switch case 
 
-        } // end of while statement
+        } // end of while loop
 
         System.out.println("Thanks for playing! You won " + gamesWon + " of the games you played, drew " + gamesDrawn + " of the games you played, and lost " + gamesLost + " of the games you played.\nYou played a total of " + gamesPlayed + " games.");
 
-        /*Card test2;
-        test2 = deal();
-        System.out.println(test2);
-
-        Card test3;
-        test3 = deal();
-        System.out.println(test3);*/
-
-        /*for (int i = 0; i < 52; i++) {
-            System.out.printf("%-20s", deck[i].toString());
-            if ((i + 1) % 4 == 0) {
-                System.out.println();
-            }
-        }*/
     } // end of main method
 
     public static int playGame() {
         // variable to return whether the game was a win, draw, or loss for the player
         int playerWin = 0;
-        /// variable to check whether the player's turn or computer's turn is still active
+        // variable to check whether the player's turn or computer's turn is still active
         boolean play = true;
 
         // calls the shuffle method to randomize the game
@@ -129,6 +105,7 @@ public class BlackJack {
         // object to use for getting new player or computer cards
         Card currentCard;        
 
+        // boolean to check whether the player's hand or computer's hand has an ace
         boolean playerHandHasAce = false;
         boolean computerHandHasAce = false;
         
@@ -136,10 +113,11 @@ public class BlackJack {
         Card[] playerHand = new Card[9];
         Card[] computerHand = new Card[9];
 
-        // checks whether the player/computer hits a card
+        // checks whether the player has hit for a card
         boolean hit = false;
         // variable to track how many times the player hit, and subtract that from card count for the computer's turn when it hits
         int hitCount = 0;
+        // checks whether or not it is the player's turn
         boolean playerTurn = true;
 
         // first value keeps track of the player score without an ace, and second keeps track with an ace, set to 0 if no ace
@@ -147,6 +125,7 @@ public class BlackJack {
         int[] computerSum = {0, 0};
         // variable to hold the information of the computer's first card and its value
         int revealedSum = 0;
+        // checks whether the revealed card was an ace or not
         boolean revealedAce = false;
         // variable to check whether the computer will choose to hit/stand or if it must reveal its second card
         boolean computerTurnOne = true;
@@ -165,6 +144,7 @@ public class BlackJack {
         // variable used to parse the first word of the card object, which contains the value of the card
         String check;
 
+        // deals two cards to the player, and then calculates the sum of the hand.
         for (int i = 0; i < 2; i++) {
 
             check = playerHand[i].toString();
@@ -289,14 +269,6 @@ public class BlackJack {
             computerSum[1] = computerSum[0] + 10;
         }
 
-        /*System.out.println(playerHand[0].toString());
-        System.out.println(playerHand[1].toString());
-        System.out.println(playerSum[0] + " " + playerSum[1]);*/
-
-        /*System.out.println(computerHand[0].toString());
-        System.out.println(computerHand[1].toString());
-        System.out.println(computerSum[0] + " " + computerSum[1]);*/
-
         // checks whether the player's hand has an ace, and what the value of their hand is, and then gives them a message of what they have.
         if (playerHandHasAce) {
             if (playerSum[1] < 21) {
@@ -368,6 +340,7 @@ public class BlackJack {
                         hit = false;
                         break;
                 } // end of switch case
+                // checks whether the player hit or not, and then deals a card to them if they did
                 if (hit) {
                     hitCount++;
                     System.out.println("You have chosen to hit. Your new card is: ");
@@ -423,6 +396,7 @@ public class BlackJack {
                         default:
                             break;
                     } // end of switch case
+                    // checks if the player has an ace  in their hand, and then tells them their new hand value.
                     if (playerHandHasAce) {
                         playerSum[1] = playerSum[0] + 10;
                         if (playerSum[1] < 22) {
@@ -456,10 +430,11 @@ public class BlackJack {
 
             // checks if it's the computer's turn, and then has it reveal its card if it's the computer's first turn, or decide whether to hit or stand if it's the computer's 2nd+ turn
             if (computerTurnOne && !playerTurn) {
+                // checks whether the player busted by hitting new cards or not, and ends the while loop early if they did.
                 if (playerSum[0] > 21) {
                     play = false;
                     break;
-                }
+                } // end of if statement
                 System.out.println("The computer will now reveal its second card: " + computerHand[1].toString());
                 if (revealedAce) {
                     if (computerSum[1] < 21) {
@@ -469,7 +444,7 @@ public class BlackJack {
                         play = false;
                     } else {
                         System.out.println("The ace would bust, so the computer's hand is only worth: " + computerSum[0] + ".");
-                    }
+                    } // end of if else statement
                 } else if (computerHandHasAce) {
                     System.out.println("The computer revealed its ace!");
                     if (computerSum[1] < 21) {
@@ -496,6 +471,7 @@ public class BlackJack {
             } else if (!playerTurn && (computerSum[0] < 17 && !(computerSum[1] > 16 && computerSum[1] < 22))) {
                 System.out.println("The computer has chosen to hit.");
 
+                // deals a card to the computer using the currentCardNumber minus the hitcount to get the right index regardless of the number of times the player hit.
                 currentCard = deal();
                 computerHand[currentCardNumber - hitCount] = currentCard;
                 System.out.println("The computer has drawn: " + computerHand[currentCardNumber - hitCount].toString() + ".");
@@ -546,7 +522,7 @@ public class BlackJack {
                         break;
                     default:
                         break;
-                }
+                } // end of switch case
 
                 // checks if the computer's hand has an ace, and if it does, sets the value of the computer's ace sum.
                 // after checking, regardless of if the computer had an ace, it informs the player of the computer's new hand value.
@@ -570,22 +546,23 @@ public class BlackJack {
                 System.out.println("(Press enter to continue.)");
                 input = userInput.nextLine();
                 play = false;
-            }
-        } // end of playGame method
+            } // end of if else statement
+        } // end of while loop (player and computer choosing to hit/stand)
 
+        // checks if the player won or drew this game, and updates the value to 1 for a win or 2 for a draw.
         if (playerSum[1] > 0 && playerSum[1] < 22) {
             if (computerSum[1] > 0 && computerSum[1] < 22) {
                 if (playerSum[1] > computerSum[1]) {
                     playerWin = 1;
                 } else if (playerSum[1] == computerSum[1]) {
                     playerWin = 2;
-                }
+                } // end of if else statement
             } else if (computerSum[0] < 22) {
                 if (playerSum[1] > computerSum[0]) {
                     playerWin = 1;
                 } else if (playerSum[1] == computerSum[0]) {
                     playerWin = 2;
-                }
+                } // end of if else statement
             } else {
                 playerWin = 1;
             } // end of if else statement
@@ -601,11 +578,11 @@ public class BlackJack {
                     playerWin = 1;
                 } else if (playerSum[0] == computerSum[0]) {
                     playerWin = 2;
-                }
+                } // end of if else statement
             } else {
                 playerWin = 1;
-            }
-        }
+            } // end of if else statement
+        } // end of if else statement (checking player sum array values to see whether or not the player or computer had won this game of Black Jack)
 
         return playerWin;
     } // end of play method
@@ -630,5 +607,4 @@ public class BlackJack {
             deck[second] = temp;
         } // end of for loop
     } // end of method shuffle
-
 } // end of class BlackJack
